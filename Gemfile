@@ -1,5 +1,9 @@
+ruby '2.3.1'
 source 'https://rubygems.org'
 
+group :development, :test do
+  gem 'dotenv-rails', require: 'dotenv/rails-now'
+end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0'
