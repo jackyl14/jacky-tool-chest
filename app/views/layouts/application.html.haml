@@ -1,0 +1,13 @@
+!!!
+%html
+  %head
+    %title JackyToolChest
+    = csrf_meta_tags
+
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': true
+    = javascript_include_tag 'application', 'data-turbolinks-track': true
+
+    %link{rel: "stylesheet", href: "https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"}
+
+  %body
+    = yield
