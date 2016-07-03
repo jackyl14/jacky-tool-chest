@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :importer, only: [:index]
-
-  root to: 'importer#index'
+  namespace :importer do
+    resources :upc, only: [:index]
+  end
+  root to: 'importer/upc#index'
 end
