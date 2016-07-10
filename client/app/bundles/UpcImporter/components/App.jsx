@@ -12,6 +12,10 @@ const styles = {
   app: {
     minWidth: "650px",
   },
+  appBody: {
+    maxWidth: "960px",
+    margin: "0px auto",
+  },
   progressBar: {
     margin: "10px 30px",
     padding: "0 20px",
@@ -33,11 +37,13 @@ class App extends React.Component {
             title="UPC-A Importer"
             showMenuIconButton={ false }
           />
-          <div style={ styles.progressBar }>
-            <ProgressBar {...{ stageIndex }} />
-          </div>
-          <div style={{ margin: "10px 30px" }}>
-            { this.determineStageContent(stageIndex) }
+          <div style={styles.appBody}>
+            <div style={ styles.progressBar }>
+              <ProgressBar {...{ stageIndex }} />
+            </div>
+            <div style={{ margin: "10px 30px" }}>
+              { this.determineStageContent(stageIndex) }
+            </div>
           </div>
         </div>
       </MuiThemeProvider>

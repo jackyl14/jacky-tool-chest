@@ -11,20 +11,21 @@ import _ from 'lodash';
 
 const styles = {
   actionColumn: {
-    width: '10%',
+    width: '20%',
   },
   idColumn: {
     width: '10%',
   },
   entryColumn: {
-    width: '25%',
+    width: '20%',
   },
   errorColumn: {
-    width: '55%',
+    width: '50%',
   },
-  leftButton: {
+  button: {
     marginRight: '5px',
-  }
+    minWidth: '26px'
+  },
 }
 
 class TableList extends React.Component {
@@ -64,27 +65,33 @@ class TableList extends React.Component {
                 <TableRowColumn style={styles.entryColumn}>{_.at(this.props.array, index)}</TableRowColumn>
                 <TableRowColumn style={styles.errorColumn}>{_.join(this.props.errorBank[index], "\n")}</TableRowColumn>
                 <TableRowColumn style={styles.actionColumn}>
-                  <RaisedButton
-                    icon={<EditIcon />}
-                    secondary={true}
-                    fullWidth={true}
-                    onTouchTap={this.props.handleOnEditTouchTap.bind(this, index)}
-                    style={styles.leftButton}
-                  />
+                  <span>
+                    <RaisedButton
+                      icon={<EditIcon />}
+                      secondary={true}
+                      fullWidth={true}
+                      onTouchTap={this.props.handleOnEditTouchTap.bind(this, index)}
+                      style={styles.button}
+                    />
+                  </span>
                   {
                     this.props.type !== "deleted" ?
-                      <RaisedButton
-                        icon={<DeleteIcon />}
-                        primary={true}
-                        fullWidth={true}
-                        onTouchTap={this.props.handleOnDeleteTouchTap.bind(this, index)}
-                      /> :
-                      <RaisedButton
-                        icon={<RestoreIcon />}
-                        primary={true}
-                        fullWidth={true}
-                        onTouchTap={this.props.handleOnRestoreTouchTap.bind(this, index)}
-                      />
+                      <span>
+                        <RaisedButton
+                          icon={<DeleteIcon />}
+                          primary={true}
+                          onTouchTap={this.props.handleOnDeleteTouchTap.bind(this, index)}
+                          style={styles.button}
+                        />
+                      </span> :
+                      <span>
+                        <RaisedButton
+                          icon={<RestoreIcon />}
+                          primary={true}
+                          onTouchTap={this.props.handleOnRestoreTouchTap.bind(this, index)}
+                          style={styles.button}
+                        />
+                      </span>
                   }
                 </TableRowColumn>
               </TableRow>
