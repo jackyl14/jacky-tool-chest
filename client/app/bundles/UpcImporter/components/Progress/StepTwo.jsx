@@ -7,6 +7,15 @@ import UPCATable from '../../containers/UPCATable';
 import _ from 'lodash';
 
 const styles = {
+  headerText: {
+    fontSize: '16px',
+    fontFamily: 'Roboto, sans-serif',
+    fontWeight: 'normal',
+    height: '24px',
+    wordWrap: 'break-word',
+    whiteSpace: 'pre-wrap',
+    marginBottom: '20px',
+  },
   submitButton: {
     width: '100%',
     margin: '20px 0',
@@ -29,6 +38,9 @@ class StepTwo extends React.Component {
     } = this.props;
     return (
       <div>
+        <div style={styles.headerText}>
+          To submit your list of UPC-A, please fix any errors or remove any unwanted UPC-A code.
+        </div>
         <Tabs
           value={this.props.tabValue}
           onChange={this.props.handleOnTabChange}
