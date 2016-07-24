@@ -22,6 +22,7 @@ module.exports = {
     // webpack.rails.config
     app: [
       './app/bundles/UpcImporter/startup/clientRegistration',
+      './app/bundles/LabResultFinder/startup/clientRegistration',
     ],
   },
   resolve: {
