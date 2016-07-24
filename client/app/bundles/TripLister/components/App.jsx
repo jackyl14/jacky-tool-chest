@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import { Table, TableHeader, TableRow, TableHeaderColumn, TableBody, TableRowColumn } from 'material-ui/Table';
 import { grey900 } from 'material-ui/styles/colors';
 
 import _ from 'lodash';
+import { formatDate, formatUSCurrency, formatCCLastFourDigits } from '../util/formatHelpers';
 
 const styles = {
   app: {
@@ -13,19 +14,28 @@ const styles = {
   appBar: {
     backgroundColor: grey900,
   },
-  appBody: {
-    maxWidth: "960px",
-    margin: "0px auto",
+  table: {
+    title: {
+      fontSize: "22px",
+      textAlign: "center",
+      fontWeight: "300",
+      margin: "20px 0px",
+    },
+    header: {
+      color: grey900,
+      fontSize: "14px",
+      fontWeight: "600",
+    },
+    fareColumn: {
+      textAlign: "right",
+    },
   },
-  progressBar: {
-    margin: "10px 30px",
-    padding: "0 20px",
-  },
-
 }
 
 class App extends React.Component {
   static propTypes = {
+    tripsArray: PropTypes.array.isRequired,
+    handleOnComponentMount: PropTypes.func.isRequired,
   };
 
   render() {
@@ -37,6 +47,7 @@ class App extends React.Component {
             showMenuIconButton={ false }
             style={styles.appBar}
           />
+          <div style={styles.table.title}>MY UBER TRIPS</div>
           <Table
             selectable={false}
           >
@@ -45,25 +56,25 @@ class App extends React.Component {
               adjustForCheckbox={false}
             >
               <TableRow>
-                <TableHeaderColumn>Pickup</TableHeaderColumn>
-                <TableHeaderColumn>Driver</TableHeaderColumn>
-                <TableHeaderColumn>Fare</TableHeaderColumn>
-                <TableHeaderColumn>Car</TableHeaderColumn>
-                <TableHeaderColumn>City</TableHeaderColumn>
-                <TableHeaderColumn>Payment Method</TableHeaderColumn>
+                <TableHeaderColumn style={styles.table.header}>Pickup</TableHeaderColumn>
+                <TableHeaderColumn style={styles.table.header}>Driver</TableHeaderColumn>
+                <TableHeaderColumn style={_.merge({},styles.table.header, styles.table.fareColumn)}>Fare</TableHeaderColumn>
+                <TableHeaderColumn style={styles.table.header}>Car</TableHeaderColumn>
+                <TableHeaderColumn style={styles.table.header}>City</TableHeaderColumn>
+                <TableHeaderColumn style={styles.table.header}>Payment Method</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
               {
-                this.tripsArray().map( (trip) => (
+                this.props.tripsArray.map( (trip) => (
                   <TableRow key={trip.id}>
-                    <TableRowColumn>trip.pickup_time</TableRowColumn>
+                    <TableRowColumn>{formatDate(trip.pickup_time)}</TableRowColumn>
                     <TableRowColumn>{trip.driver.name}</TableRowColumn>
-                    <TableRowColumn>{trip.fare}</TableRowColumn>
+                    <TableRowColumn style={styles.table.fareColumn}>{formatUSCurrency(trip.fare)}</TableRowColumn>
                     <TableRowColumn>{trip.car.type}</TableRowColumn>
                     <TableRowColumn>{trip.city}</TableRowColumn>
-                    <TableRowColumn>{trip.payment_method.last_four}</TableRowColumn>
-                  </TableRow>
+                    <TableRowColumn>{formatCCLastFourDigits(trip.payment_method.last_four)}</TableRowColumn>
+                </TableRow>
                 ))
               }
             </TableBody>
@@ -71,6 +82,10 @@ class App extends React.Component {
         </div>
       </MuiThemeProvider>
     );
+  };
+
+  componentDidMount() {
+    setTimeout(this.props.handleOnComponentMount, 500);
   };
 
 }

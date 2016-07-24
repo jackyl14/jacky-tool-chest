@@ -4,34 +4,31 @@ import actionTypes from '../constants/tripListerConstants';
 import _ from 'lodash';
 
 export const $$initialState = Immutable.fromJS({
-  stageIndex: 0,
-  tabValue: 'a',
-  inputString: null,
-  inputError: null,
-  splitStringArray: [],
-  errorBank: {},
-  deletedKeys: [],
-  editDialog: {
-    isOpened: false,
-    originalEntry: null,
-    entryIndex: null,
-    entryValue: null,
-    entryError: null,
-    errorMessages: [],
+  tripsArray: [],
+  basicAuth: null,
+  requests: {
+    tripsArray: {
+      isFetching: false,
+      error: null,
+    },
   },
-  submission: {
-    isLoading: false,
-    data: {},
-    error: {}
-  }
 });
 
 export default function tripListerReducer($$state = $$initialState, action) {
   const { type, data } = action;
 
   switch (type) {
-    case actionTypes.INPUT_STRING_UPDATE:
-      return $$state.set('inputString', data.inputString);
+    case actionTypes.TRIPS_ARRAY_UPDATE:
+      return $$state.set('tripsArray', data.tripsArray);
+
+    case actionTypes.TRIPS_ARRAY_REQUEST:
+      return $$state.setIn(['requests', 'tripsArray', 'isFetching'], true)
+
+    case actionTypes.TRIPS_ARRAY_REQUEST_ERROR_LOG:
+      return $$state.setIn(['requests', 'tripsArray', 'error'], data.error.message)
+
+    case actionTypes.TRIPS_ARRAY_RECEIVE:
+      return $$state.setIn(['requests', 'tripsArray', 'isFetching'], false)
 
     default:
       return $$state;

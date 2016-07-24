@@ -1,38 +1,52 @@
 import fetch from 'isomorphic-fetch';
 import actionTypes from '../constants/tripListerConstants';
-import { checkStatus, parseJSON } from '../util/http_helpers';
-import _ from 'lodash';
+import { checkStatus, parseJSON } from '../util/httpHelpers';
 
-export function updateInputString(data) {
+export function updateTripsArray(data) {
   return {
-    type: actionTypes.INPUT_STRING_UPDATE,
+    type: actionTypes.TRIPS_ARRAY_UPDATE,
     data,
   };
 }
 
-export function uploadToQuri(uploadArray) {
-  return (dispatch, getState) => {
-    var upcImporterStore = getState().$$upcImporterStore;
-    var splitStringArray = upcImporterStore.get('splitStringArray');
-    var deletedArray = _.at(splitStringArray, upcImporterStore.get('deletedKeys'));
+function requestTripsArray() {
+  return {
+    type: actionTypes.TRIPS_ARRAY_REQUEST,
+  };
+}
 
-    if (!upcImporterStore.getIn(['submission', 'isFetching'])) {
-      dispatch(requestQuriUpload());
-      return fetch(`https://iwo3uesa6c.execute-api.us-east-1.amazonaws.com/prod/products`, {
-        method: 'POST',
-        body: JSON.stringify({
-          list: _.difference(splitStringArray, deletedArray),
-        })
+function logTripsArrayRequestError(data) {
+  return {
+    type: actionTypes.TRIPS_ARRAY_REQUEST_ERROR_LOG,
+    data,
+  };
+}
+
+function receiveTripsArray() {
+  return {
+    type: actionTypes.TRIPS_ARRAY_RECEIVE,
+  };
+}
+
+export function requestTripArray() {
+  return (dispatch, getState) => {
+    if (!getState().$$tripListerStore.getIn(['requests', 'tripsArray', 'isFetching'])) {
+      dispatch(requestTripsArray());
+      return fetch(`/api/trips/uber`, {
+        method: "GET",
+        headers: {
+          "Authorization": getState().$$tripListerStore.get('basicAuth'),
+        },
       })
       .then(checkStatus)
       .then(parseJSON)
       .then(data => {
-        dispatch(logQuriUploadData({ data }));
-        dispatch(receiveQuriUpload());
+        dispatch(updateTripsArray({tripsArray: data}));
+        dispatch(receiveTripsArray());
       })
       .catch(error => {
-        dispatch(logQuriUploadError({ error }));
-        dispatch(receiveQuriUpload());
+        dispatch(logTripsArrayRequestError({error}));
+        dispatch(receiveTripsArray());
       });
     } else {
       return Promise.resolve();

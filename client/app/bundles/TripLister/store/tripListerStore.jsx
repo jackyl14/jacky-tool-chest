@@ -14,12 +14,12 @@ import reducers from '../reducers';
 import { initialStates } from '../reducers';
 
 export default props => {
-  const { environment } = props;
+  const { environment, basicAuth } = props;
   const { $$tripListerState } = initialStates;
 
   // Redux expects to initialize the store using an Object, not an Immutable.Map
   const initialState = {
-    $$tripListerStore: $$tripListerState,
+    $$tripListerStore: $$tripListerState.merge({ basicAuth }),
   };
 
   const reducer = combineReducers(reducers);
