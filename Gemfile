@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 
 group :development, :test do
   gem 'dotenv-rails', require: 'dotenv/rails-now'
+  gem 'rspec-rails', '~> 3.4'
+  gem 'pry'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
