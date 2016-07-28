@@ -15,6 +15,12 @@ function requestTripsArray() {
   };
 }
 
+function incrementTripRequestCount() {
+  return {
+    type: actionTypes.TRIPS_ARRAY_REQUEST_COUNT_INCREMENT,
+  };
+}
+
 function logTripsArrayRequestError(data) {
   return {
     type: actionTypes.TRIPS_ARRAY_REQUEST_ERROR_LOG,
@@ -32,6 +38,7 @@ export function requestTripArray() {
   return (dispatch, getState) => {
     if (!getState().$$tripListerStore.getIn(['requests', 'tripsArray', 'isFetching'])) {
       dispatch(requestTripsArray());
+      dispatch(incrementTripRequestCount());
       return fetch(`/api/trips/uber`, {
         method: "GET",
         headers: {

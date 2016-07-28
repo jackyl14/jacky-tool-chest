@@ -3,13 +3,14 @@ import { bindActionCreators } from 'redux';
 
 import Immutable from 'immutable';
 
-import App from '../components/App';
+import List from '../components/List';
 import * as tripListerActionCreators from '../actions/tripListerActionCreators';
 
 
 const mapStateToProps = (state) => {
   return {
     tripsArray: state.$$tripListerStore.toJS().tripsArray,
+    tripRequest: state.$$tripListerStore.toJS().requests.tripsArray,
   };
 };
 
@@ -18,16 +19,16 @@ const mapDispatchToProps = (dispatch) => {
   const { requestTripArray } = actions;
 
   return {
-    handleOnComponentMount: () => {
+    retryTripRequest: () => {
       dispatch(requestTripArray());
     },
   };
 };
 
 
-const TripLister = connect(
+const UberLister = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(App);
+)(List);
 
-export default TripLister;
+export default UberLister;

@@ -8,6 +8,7 @@ export const $$initialState = Immutable.fromJS({
   basicAuth: null,
   requests: {
     tripsArray: {
+      count: 0,
       isFetching: false,
       error: null,
     },
@@ -23,6 +24,9 @@ export default function tripListerReducer($$state = $$initialState, action) {
 
     case actionTypes.TRIPS_ARRAY_REQUEST:
       return $$state.setIn(['requests', 'tripsArray', 'isFetching'], true)
+
+    case actionTypes.TRIPS_ARRAY_REQUEST_COUNT_INCREMENT:
+      return $$state.updateIn(['requests', 'tripsArray', 'count'], value => value + 1 )
 
     case actionTypes.TRIPS_ARRAY_REQUEST_ERROR_LOG:
       return $$state.setIn(['requests', 'tripsArray', 'error'], data.error.message)
