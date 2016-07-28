@@ -20,7 +20,7 @@ export default function tripListerReducer($$state = $$initialState, action) {
 
   switch (type) {
     case actionTypes.TRIPS_ARRAY_UPDATE:
-      return $$state.set('tripsArray', data.tripsArray);
+      return $$state.set('tripsArray', _.orderBy(data.tripsArray, ['pickup_time'], ['desc']));
 
     case actionTypes.TRIPS_ARRAY_REQUEST:
       return $$state.setIn(['requests', 'tripsArray', 'isFetching'], true)
